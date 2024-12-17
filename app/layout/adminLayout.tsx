@@ -525,8 +525,8 @@ const AdminLayout = ({ children, pageName }: UserLayoutProps) => {
                                 </DropdownTrigger>
                                 <DropdownMenu aria-label="User Actions" variant="flat">
                                     <DropdownItem key="profile" className="h-14 gap-2">
-                                        <p className="font-bold">{user.firstName}</p>
-                                        <p className="font-bold">{user.email}</p>
+                                        <p className="font-bold">{user?.firstName}</p>
+                                        <p className="font-bold">{user?.email}</p>
                                     </DropdownItem>
                                     <DropdownItem
                                         key="logout"
