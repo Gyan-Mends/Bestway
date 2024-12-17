@@ -16,7 +16,7 @@ export const action: ActionFunction = async ({ request }) => {
       body: JSON.stringify({ firstName, lastName }),
     });
 
-    const result = await response.json();
+    const result = await response.json();   
 
     if (response.ok) {
       // Optionally, redirect to another page or return success datareturnredirect("/success"); // Adjust this path as needed
