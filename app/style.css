@@ -1,0 +1,48 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
+@import url(https://fonts.googleapis.com/css?family=Montserrat:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
+@import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
+@import url(https://fonts.googleapis.com/css?family=Sen:regular,500,600,700,800);
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+  
+  /* Custom scrollbar for darkmode */
+.darkscrollbar-thin::-webkit-scrollbar {
+  width: 2px;
+  border-radius: 10px;
+}
+
+.darkscrollbar-thin::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+.darkscrollbar-thin::-webkit-scrollbar-thumb {
+  background: #020617;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #191919;
+}
+
+  /* Custom scrollbar styles */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 1px;
+    border-radius: 10px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: #191919;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #191919;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #191919;
+  }
+
+  
