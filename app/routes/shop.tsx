@@ -17,7 +17,7 @@ import watch1 from "~/components/illustration/watch.png";
 import news from "~/components/illustration/news.jpg";
 
 
-const Shop = () => {
+const Shop = () => { 
     const [selectedKeys, setSelectedKeys] = useState(new Set(["Products Categories"]));
 
     const selectedValue = useMemo(
