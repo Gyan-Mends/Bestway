@@ -68,7 +68,14 @@ const AttendantLayout = ({ children, pageName }: UserLayoutProps) => {
                 {/* Side Nav Content */}
 
                 <ul className="mt-10">
+                    <Button
 
+                        variant="flat"
+                        onPress={() => setTheme(theme === "light" ? "dark" : "light")}
+                        className="text-black"
+                    >
+                        {theme === "light" ? <MoonIcon className="" /> : <SunIcon className="" />}
+                    </Button>
                     <Link className="" to="/attendant">
                         <li className="hover:bg-primary-400 text-md hover:bg-white hover:text-success font-nunito text-md p-2 rounded-lg flex items-center gap-2">
                             <DashboardIcon className="text-success h-5 w-5 hover:text-white" />
@@ -80,19 +87,19 @@ const AttendantLayout = ({ children, pageName }: UserLayoutProps) => {
                             <SaleIcon className="text-success h-5 w-5 hover:text-white" />
                             Sales Point
                         </li>
-                    </Link>
+                    </Link> 
                     <Link className="" to="/attendant/debt">
                         <li className="hover:bg-primary-400 text-md hover:bg-white hover:text-success font-nunito text-md p-2 rounded-lg flex items-center gap-2">
                             <SaleIcon className="text-success h-5 w-5 hover:text-white" />
                             Debt
                         </li>
-                    </Link>
+                    </Link> 
                     <Link className="" to="/attendant/report">
                         <li className="hover:bg-primary-400 text-md hover:bg-white hover:text-success font-nunito text-md p-2 rounded-lg flex items-center gap-2">
                             <SaleIcon className="text-success h-5 w-5 hover:text-white" />
                             Report
                         </li>
-                    </Link>
+                    </Link> 
                 </ul>
             </div>
 
