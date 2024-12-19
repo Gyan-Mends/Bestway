@@ -68,7 +68,14 @@ const AttendantLayout = ({ children, pageName }: UserLayoutProps) => {
                 {/* Side Nav Content */}
 
                 <ul className="mt-10">
-
+                    {/* <Button
+                        isIconOnly
+                        variant="flat"
+                        onPress={() => setTheme(theme === "light" ? "dark" : "light")}
+                        className="text-black"
+                    >
+                        {theme === "light" ? <MoonIcon className="" /> : <SunIcon className="" />}
+                    </Button> */}
                     <Link className="" to="/attendant">
                         <li className="hover:bg-primary-400 text-md hover:bg-white hover:text-success font-nunito text-md p-2 rounded-lg flex items-center gap-2">
                             <DashboardIcon className="text-success h-5 w-5 hover:text-white" />
