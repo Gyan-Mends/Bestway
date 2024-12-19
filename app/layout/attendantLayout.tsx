@@ -132,6 +132,14 @@ const AttendantLayout = ({ children, pageName }: UserLayoutProps) => {
                             Tickets
                         </li>
                     </Link>
+                    <Button
+                        isIconOnly
+                        variant="flat"
+                        onPress={() => setTheme(theme === "light" ? "dark" : "light")}
+                        className="text-white"
+                    >
+                        {theme === "light" ? <MoonIcon className="" /> : <SunIcon className="" />}
+                    </Button>
 
                 </ul>
             </div>
