@@ -69,7 +69,7 @@ const AttendantLayout = ({ children, pageName }: UserLayoutProps) => {
 
                 <ul className="mt-10">
                     <Button
-
+                        isIconOnly
                         variant="flat"
                         onPress={() => setTheme(theme === "light" ? "dark" : "light")}
                         className="text-black"
