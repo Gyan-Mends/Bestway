@@ -217,9 +217,9 @@ const Sales = () => {
                         </div>
 
                         <input name="intent" value="update" type="hidden" />
-                        <input name="amountPaid" value={dataValue?.amountPaid} type="" />
-                        <input name="amountLeft" value={dataValue?.amountLeft} type="" />
-                        <input name="totalAmount" value={dataValue?.totalAmount} type="" />
+                        <input name="amountPaid" value={dataValue?.amountPaid} type="hidden" />
+                        <input name="amountLeft" value={dataValue?.amountLeft} type="hidden" />
+                        <input name="totalAmount" value={dataValue?.totalAmount} type="hidden" />
                         <input hidden name="userid" value={user._id} type="text" />
                         <input name="id" value={dataValue?._id} type="hidden" />
 
@@ -249,7 +249,7 @@ const Sales = () => {
                             </div>
                             <div className="font-nunito text-default-500 text-sm">
                                 <p>Attendant</p>
-                                <p>{dataValue?.attendant.firstName} {dataValue?.attendant?.middleName} {dataValue?.attendant?.lastName}</p>
+                                <p>{dataValue?.attendant?.firstName} {dataValue?.attendant?.middleName} {dataValue?.attendant?.lastName}</p>
                             </div>
                         </div>
 
@@ -259,7 +259,7 @@ const Sales = () => {
                                 <p className="font-nunito font-semibold">Products</p>
                                 {dataValue.products.map((productDetail: SalesInterface, idx: number) => (
                                     <div key={idx}>
-                                        <p>{productDetail.product.name}</p>
+                                        <p>{productDetail?.product?.name}</p>
                                     </div>
                                 ))}
                             </div>

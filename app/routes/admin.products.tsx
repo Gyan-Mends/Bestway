@@ -116,12 +116,11 @@ const Products = () => {
             <NewCustomTable
                 columns={ProductColumns}
                 loadingState={navigation.state === "loading" ? "loading" : "idle"}
-                totalPages={totalPages}
-                page={1}
-                setPage={(page) => {
-                    navigate(`?pages=${page}`)
-                }}
-            >
+                     totalPages={totalPages}
+                     page={1}
+                     setPage={(page) => (
+                         navigate(`?page=${page}`)
+                     )}>
                 {products.map((products: ProductInterface, index: number) => (
                     <TableRow key={index}>
                         <TableCell>

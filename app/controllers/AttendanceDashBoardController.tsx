@@ -27,11 +27,15 @@ class AttendanceDashboardController {
 
             // Fetch recent sales
             const sales = await Sales.find({ attendant: user._id })
+                .populate({
+                    path: "products.product", // Path to the nested product field
+                })
                 .populate("attendant")
                 .sort({ createdAt: -1 })
                 .skip((page - 1) * limit)
                 .limit(limit)
                 .exec();
+
 
 
 

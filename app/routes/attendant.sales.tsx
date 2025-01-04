@@ -21,7 +21,7 @@ import usersController from "~/controllers/Users";
 import { getSession } from "~/session";
 
 const Sales = () => {
-    const { products, user, carts, totalQuantity, totalPrice } = useLoaderData<{
+    const { pro, user, carts, totalQuantity, totalPrice } = useLoaderData<{
         products: ProductInterface[],
         user: RegistrationInterface[],
         carts: CartInterface[],
@@ -29,7 +29,7 @@ const Sales = () => {
         totalPrice: number
     }>();
     const [searchQuery, setSearchQuery] = useState('');
-    const [filteredSuppliers, setFilteredSuppliers] = useState(products);
+    const [filteredSuppliers, setFilteredSuppliers] = useState(pro);
     const [isEditModalOpened, setIsEditModalOpened] = useState(false);
     const [isConfirmModalOpened, setIsConfirmModalOpened] = useState(false);
     const [isCheckOutModalOpened, setIsCheckOutModalOpened] = useState(false);
@@ -65,14 +65,15 @@ const Sales = () => {
     };
 
     useEffect(() => {
-        const filtered = products.filter(product => {
+        const filtered = pro.filter(product => {
             const lowerCaseQuery = searchQuery.toLowerCase();
             return (
                 product.name.toLowerCase().includes(lowerCaseQuery)
             );
         });
         setFilteredSuppliers(filtered);
-    }, [searchQuery, products]);
+    }, [searchQuery, pro]);
+
     useEffect(() => {
         if (actionData) {
             if (actionData.success) {
@@ -173,18 +174,18 @@ const Sales = () => {
                     {/* product items */}
                     <div className="lg:grid lg:grid-cols-4 gap-10 overflow-y-scroll scrollbar-thin dark:scrollbar-thin pr-8
                  h-[76vh] rounded-lg overflow-x-hidden">
-                        {products.map((products: ProductInterface, index: number) => (
+                        {pro.map((products: ProductInterface, index: number) => (
                             <div
-                                className="lg:w-[13vw] rounded-lg p-2 lg:h-[30vh] mt-4 dark:bg-[#333] bg-white border border-white/5"
+                                className="lg:w-[12vw] rounded-lg p-2 lg:h-[30vh] mt-4 dark:bg-[#333] bg-white border border-white/5"
                                 key={index}
                                 onClick={() => {
                                     setIsEditModalOpened(true);
                                     setDataValue(products);
                                 }}
                             >
-                                <div className="h-[19vh] w-full overflow-hidden">
+                                <div className="h-[17vh] w-full overflow-hidden">
                                     <img
-                                        className="rounded-lg hover:rounded-lg h-[19vh] w-full transform transition-transform duration-500 hover:scale-110"
+                                        className="rounded-lg hover:rounded-lg h-[17vh] w-full transform transition-transform duration-500 hover:scale-110"
                                         src={products?.image}
                                         alt=""
                                     />
@@ -212,37 +213,37 @@ const Sales = () => {
                                     </div>
                                 </div>
                             ) : (
-                                    carts.map((cart: CartInterface, index: number) => (
-                                        <div key={index} className="px-4 h-20 w-full bg-white dark:bg-[#191919] border border-white/5 mt-4 rounded-lg p-2 flex gap-10">
-                                            <div className="h-16 w-20">
-                                                <img className="h-16 w-20 rounded-lg" src={cart?.product?.image} alt={cart.product.name} />
-                                            </div>
-                                            <div className="flex flex-col justify-between w-full">
-                                                <div className="flex justify-between">
-                                                    <p className="font-nunito text-lg">{cart?.product?.name}</p>
-                                                    <button
-                                                        className="text-danger"
-                                                        type="button"
-                                                        onClick={() => {
-                                                            setIsConfirmModalOpened(true);
-                                                            setCartDataValue(cart);
-                                                        }}
-                                                    >
-                                                        <DeleteIcon />
-                                                    </button>
-                                                </div>
-                                                <div className="flex justify-between">
-                                                    <p className="font-nunito text-sm">
-                                                        {cart?.quantity === 1 ? `${cart.quantity} item` : `${cart.quantity} items`}
-                                                    </p>
-                                                    <p className="font-nunito text-md">Ghc {cart?.price}</p>
-                                                </div>
-                                            </div>
-                                            {/* Hidden Inputs for Form */}
-                                            <input name="quantity" type="hidden" value={cart.quantity} />
-                                            <input name="product" type="hidden" value={cart.product._id} />
+                                carts.map((cart: CartInterface, index: number) => (
+                                    <div key={index} className="px-4 h-20 w-full bg-white dark:bg-[#191919] border border-white/5 mt-4 rounded-lg p-2 flex gap-10">
+                                        <div className="h-16 w-20">
+                                            <img className="h-16 w-20 rounded-lg" src={cart?.product?.image} alt={cart.product.name} />
                                         </div>
-                                    ))
+                                        <div className="flex flex-col justify-between w-full">
+                                            <div className="flex justify-between">
+                                                <p className="font-nunito text-lg">{cart?.product?.name}</p>
+                                                <button
+                                                    className="text-danger"
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setIsConfirmModalOpened(true);
+                                                        setCartDataValue(cart);
+                                                    }}
+                                                >
+                                                    <DeleteIcon />
+                                                </button>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <p className="font-nunito text-sm">
+                                                    {cart?.quantity === 1 ? `${cart.quantity} item` : `${cart.quantity} items`}
+                                                </p>
+                                                <p className="font-nunito text-md">Ghc {cart?.price}</p>
+                                            </div>
+                                        </div>
+                                        {/* Hidden Inputs for Form */}
+                                        <input name="quantity" type="hidden" value={cart.quantity} />
+                                        <input name="product" type="hidden" value={cart.product._id} />
+                                    </div>
+                                ))
                             )}
                         </div>
                         <div className="dark:bg-[#191919] bg-white border border-white/5 h-60 flex flex-col justify-between rounded-bl-xl rounded-br-xl px-10 py-4 dark:text-white">
@@ -308,45 +309,45 @@ const Sales = () => {
                                     </button>
                                 ) : (
                                     <>
-                                            <button
-                                                className="w-80 h-10 bg-primary rounded-xl flex items-center justify-center gap-2 bg-opacity-20 text-primary font-nunito text-xl"
-                                                color="primary"
-                                                type="button"
-                                                onClick={() => setIsCheckOutModalOpened(true)}
-                                            >
-                                                {isPartialPayment ? 'Proceed with Part Payment' : 'Checkout'}
-                                            </button>
+                                        <button
+                                            className="w-80 h-10 bg-primary rounded-xl flex items-center justify-center gap-2 bg-opacity-20 text-primary font-nunito text-xl"
+                                            color="primary"
+                                            type="button"
+                                            onClick={() => setIsCheckOutModalOpened(true)}
+                                        >
+                                            {isPartialPayment ? 'Proceed with Part Payment' : 'Checkout'}
+                                        </button>
 
-                                            {/* Confirm Checkout Modal */}
-                                            <ConfirmModal
-                                                className=""
-                                                header="Confirm Checkout"
-                                                content="Are you sure you want to proceed with the checkout?"
-                                                isOpen={isCheckOutModalOpened}
-                                                onOpenChange={handleCheckOutModalClosed}
-                                            >
-                                                <div className="flex gap-4">
-                                                    <Button
-                                                        color="primary"
-                                                        variant="flat"
-                                                        className="font-nunito text-md"
-                                                        onPress={handleCheckOutModalClosed}
-                                                    >
-                                                        Cancel
-                                                    </Button>
-                                                    <Button
-                                                        color="success"
-                                                        variant="flat"
-                                                        className="font-nunito text-md"
-                                                        onPress={() => {
-                                                            handleConfirmModalClosed();
-                                                            document.querySelector("form")?.submit();
-                                                        }}
-                                                    >
-                                                        Confirm
-                                                    </Button>
-                                                </div>
-                                            </ConfirmModal>
+                                        {/* Confirm Checkout Modal */}
+                                        <ConfirmModal
+                                            className=""
+                                            header="Confirm Checkout"
+                                            content="Are you sure you want to proceed with the checkout?"
+                                            isOpen={isCheckOutModalOpened}
+                                            onOpenChange={handleCheckOutModalClosed}
+                                        >
+                                            <div className="flex gap-4">
+                                                <Button
+                                                    color="primary"
+                                                    variant="flat"
+                                                    className="font-nunito text-md"
+                                                    onPress={handleCheckOutModalClosed}
+                                                >
+                                                    Cancel
+                                                </Button>
+                                                <Button
+                                                    color="success"
+                                                    variant="flat"
+                                                    className="font-nunito text-md"
+                                                    onPress={() => {
+                                                        handleConfirmModalClosed();
+                                                        document.querySelector("form")?.submit();
+                                                    }}
+                                                >
+                                                    Confirm
+                                                </Button>
+                                            </div>
+                                        </ConfirmModal>
                                     </>
                                 )}
                             </div>
@@ -387,7 +388,7 @@ const Sales = () => {
                             <input type="hidden" name="quantity" value={quantity} />
                             <input type="hidden" name="attendant" value={user?._id} />
                             <input type="hidden" name="product" value={dataValue?._id} />
-                            <input type="" name="costprice" value={dataValue?.costPrice} />
+                            <input type="hidden" name="costprice" value={dataValue?.costPrice} />
                             <input type="hidden" name="price" value={dataValue?.price} />
                             <input type="hidden" name="intent" value="addToCart" />
                             <p className="text-2xl font-nunito">{dataValue?.name}</p>
@@ -489,7 +490,7 @@ export const loader: LoaderFunction = async ({ request }) => {
         return redirect("/")
     }
 
-    const { products, user } = await productsController.FetchProducts({
+    const { products, pro, user } = await productsController.FetchProducts({
         request,
         page,
         search_term
@@ -499,9 +500,9 @@ export const loader: LoaderFunction = async ({ request }) => {
     console.log(user);
 
 
-    return { products, user, carts, totalQuantity, totalPrice };
+    return { products, user, carts, totalQuantity, pro, totalPrice };
 
 
 
-    
+
 };

@@ -346,7 +346,6 @@ const AdminLayout = ({ children, pageName }: UserLayoutProps) => {
         user: RegistrationInterface[];
     }>();
 
-    // const { theme, setTheme } = useTheme()
 
     // const { user } = useLoaderData<{ user: { user: string } }>()
     useEffect(() => {
@@ -383,7 +382,21 @@ const AdminLayout = ({ children, pageName }: UserLayoutProps) => {
             <div className={`rounded-xl hidden lg:block md:block w-64 bg-[#333] h-[88vh] shadow-md dark:text-white fixed transition-transform duration-500 p-6 ${desktopNav ? "transform-none" : "-translate-x-full"}`}>
                 {/* logo */}
                 <div className="font-montserrat text-lg text-white">Main Menu</div>
-
+                {/* <Button
+                                     className="border-b-2 border-b-white hover:"
+                                     color="primary" onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+                                     {theme === "light" ? (
+                                         <>
+                                            <SunIcon className="h-[20px] w-[20px] dark:text-white" />
+                                            <p>Light Mode</p>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <MoonIcon className="h-[20px] w-[20px] dark:text-white" />
+                                            <p>Dark Mode</p>
+                                        </>
+                                    )}
+                </Button> */}
                 {/* Side Nav Content */}
                 <div className="flex flex-col gap-4">
                     <ul className="mt-6 pl-2 flex flex-col gap-2">

@@ -51,7 +51,7 @@ class ProductsController {
 
                 if (Number(low_stock) >= Number(quantity)) {
                     return json({ message: "Low stock must be less than quantity", success: false }, { status: 400 })
-                } else if (price < costPrice) {
+                } else if (Number(price) < Number(costPrice)) {
                     return json({ message: "Runnig at loss, selling price must be equal to or more than cost price", success: false }, { status: 400 })
                 } else {
                     const response = await products.save();
@@ -236,6 +236,12 @@ class ProductsController {
                 .limit(limit)
                 .exec();
 
+            const pro = await Product.find(searchFilter)
+            .populate("category")
+            .skip(skipCount)
+            .exec();
+
+
             const result = await Product.aggregate([
                 {
                     $group: {
@@ -266,7 +272,7 @@ class ProductsController {
             const totalAfterSales = result1.length > 0 ? result1[0].totalProductAmountAfterSales : 0;
             const totalProfitAfterSales = result2.length > 0 ? result2[0].profitAfterSales : 0;
     
-            return { user, products, totalPages, total, totalAfterSales, totalProfitAfterSales };
+            return {pro, user, products, totalPages, total, totalAfterSales, totalProfitAfterSales };
         } catch (error: any) {
             return {
                 message: error.message,
