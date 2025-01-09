@@ -91,7 +91,7 @@ const Sales = () => {
     //     return receipt
     //    }
 
-    
+
     useEffect(() => {
         if (actionData) {
             if (actionData.success) {
@@ -157,6 +157,9 @@ const Sales = () => {
                         <TableCell className="">
                             GHC {sale.balance}
                         </TableCell>
+                        <TableCell className="">
+                            {sale.createdAt}
+                        </TableCell>
 
                         <TableCell className="relative flex items-center gap-4">
                             <Button
@@ -188,7 +191,7 @@ const Sales = () => {
                             </div>
                             <div className="font-nunito text-default-500 text-sm">
                                 <p>Attendant</p>
-                                <p>{dataValue?.attendant.firstName} {dataValue?.attendant?.middleName} {dataValue?.attendant?.lastName}</p>
+                                <p>{dataValue?.attendant?.firstName} {dataValue?.attendant?.middleName} {dataValue?.attendant?.lastName}</p>
                             </div>
                         </div>
 
@@ -198,7 +201,7 @@ const Sales = () => {
                                 <p className="font-nunito font-semibold">Products</p>
                                 {dataValue.products.map((productDetail: SalesInterface, idx: number) => (
                                     <div key={idx}>
-                                        <p>{productDetail.product.name}</p>
+                                        <p>{productDetail?.product?.name}</p>
                                     </div>
                                 ))}
                             </div>
@@ -272,11 +275,11 @@ export const action: ActionFunction = async ({ request }) => {
 
 export const loader: LoaderFunction = async ({ request }) => {
     const url = new URL(request.url)
-     const page = parseInt(url.searchParams.get("page") as string) || 1;
+    const page = parseInt(url.searchParams.get("page") as string) || 1;
     const search_term = url.searchParams.get("search_term") as string
     const session = await getSession(request.headers.get("Cookie"));
     const token = session.get("email");
-    if(!token){
+    if (!token) {
         return redirect("/")
     }
     // Fetch product data (assuming productsController.FetchProducts works this way)

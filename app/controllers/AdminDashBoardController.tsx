@@ -16,7 +16,7 @@ class AdminDashboardController {
     }: {
         request?: Request;
         page?: number;
-            search_term: string,
+        search_term: string,
         limit?: number;
     }) {
         const skipCount = (page - 1) * limit; // Calculate the number of documents to skip
@@ -77,6 +77,7 @@ class AdminDashboardController {
                 }
             )
                 .populate("products.product")
+                .populate("attendant")
 
             const admindebtors = await Sales.find(
                 {

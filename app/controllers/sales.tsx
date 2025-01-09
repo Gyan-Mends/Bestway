@@ -34,6 +34,9 @@ class SalesController {
     customerName: string;
     customerNumber: string;
   }) {
+    const UNKNOWN_CUSTOMER = "Unknown";
+    const PAYMENT_METHOD = "cash";
+
     if (intent === "addCartToSales") {
       try {
         const session = await getSession(request.headers.get("Cookie"));
@@ -41,95 +44,77 @@ class SalesController {
         const user = await Registration.findOne({ email: token });
         const carts = await Cart.find({ attendant: user?._id }).populate("product");
 
-        if (carts.length === 0) {
+        if (!carts.length) {
           return json({
-            message: "There is no item in your cart, can't proceed to checkout",
+            message: "Your cart is empty. Cannot proceed to checkout.",
             success: false,
             status: 400,
           });
-        } else {
-          // Convert amounts to numbers for calculation
-          let totalPaid = Number(amountPaid); // Initialize with the received part payment
-          const totalAmountNum = Number(totalAmount);
-          let remainingBalance;
-
-          // Ensure totalPaid does not exceed totalAmount
-          if (totalPaid > totalAmountNum) {
-            totalPaid = totalAmountNum; // Cap totalPaid to totalAmount
-          }
-
-          // Calculate remaining balance
-          remainingBalance = totalAmountNum - totalPaid;
-
-          // Create an array of products in the cart
-          const productsArray = carts.map((item) => ({
-            product: item.product,
-            quantity: item.quantity,
-            price: item.product.price,
-            costprice: item.product.costprice,
-          }));
-
-          // Create the sale record
-          const sale = new Sales({
-            products: productsArray,
-            attendant,
-            totalAmount: totalAmountNum.toString(),
-            amountPaid: totalPaid.toString(),
-            balance: remainingBalance.toString(),
-            payments: [
-              {
-                customerNumber: customerNumber || "Unknown",
-                customerName: customerName || "Unknown",
-                amount: totalPaid,
-                paymentDate: new Date(),
-                method: "cash", // Modify this based on your payment method
-              },
-            ],
-          });
-
-          // Save the sale record
-          const addSales = await sale.save();
-          if (addSales) {
-            // Empty the cart after the sale is successful
-            await Cart.deleteMany({ attendant: user });
-
-            // Update the inventory based on the cart items
-            for (const item of carts) {
-              const productInInventory = await Product.findById(item.product);
-              if (productInInventory) {
-                const newQuantity = productInInventory.quantity - Number(item.quantity);
-                await Product.findByIdAndUpdate(item.product, { quantity: newQuantity });
-              }
-            }
-
-            return json({
-              message: "Sales made successfully",
-              success: true,
-              status: 200,
-            });
-          } else {
-            return json({
-              message: "Unable to make sales",
-              success: false,
-              status: 400,
-            });
-          }
         }
-      } catch (error: any) {
-        console.error("Error processing sales:", error);
+
+        const totalPaid = Math.min(Number(amountPaid), Number(totalAmount)); // Cap to totalAmount
+        const remainingBalance = Number(totalAmount) - totalPaid;
+
+        const productsArray = carts.map((item) => ({
+          product: item.product._id,
+          quantity: Number(item.quantity),
+          price: Number(item.product.price),
+          costprice: Number(item.product.costprice),
+        }));
+
+        const sale = new Sales({
+          products: productsArray,
+          attendant,
+          totalAmount: Number(totalAmount),
+          amountPaid: totalPaid,
+          balance: remainingBalance,
+          payments: [
+            {
+              customerNumber: customerNumber || UNKNOWN_CUSTOMER,
+              customerName: customerName || UNKNOWN_CUSTOMER,
+              amount: totalPaid,
+              paymentDate: new Date(),
+              method: PAYMENT_METHOD,
+            },
+          ],
+        });
+
+        const addSales = await sale.save();
+
+        if (addSales) {
+          await Cart.deleteMany({ attendant: user._id });
+
+          // Bulk inventory update
+          const bulkUpdates = carts.map((item) => ({
+            updateOne: {
+              filter: { _id: item.product._id },
+              update: { $inc: { quantity: -item.quantity } },
+            },
+          }));
+          await Product.bulkWrite(bulkUpdates);
+
+          return json({
+            message: "Sales completed successfully.",
+            success: true,
+            status: 200,
+          });
+        }
+
         return json({
-          message: error.message,
+          message: "Failed to complete sales.",
+          success: false,
+          status: 500,
+        });
+      } catch (error: any) {
+        console.error("Sales processing error:", error);
+        return json({
+          message: "An error occurred while processing the sale.",
           success: false,
           status: 500,
         });
       }
-    } else {
-      return json({
-        message: "Wrong intent",
-        success: false,
-        status: 500,
-      });
     }
+
   }
 
 

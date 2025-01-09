@@ -16,6 +16,7 @@ import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, X
 import SaleIcon from "~/components/icons/Sales";
 import adminDashboardController from "~/controllers/AdminDashBoardController";
 import { getSession } from "~/session";
+import { EyeIcon } from "~/components/icons/EyeIcon";
 
 
 const Admin = () => {
@@ -134,23 +135,18 @@ const Admin = () => {
                             <TableRow key={index}>
                                 <TableCell>{sale._id}</TableCell>
                                 <TableCell>
-                                    {sale?.attendant?.firstName} {sale?.attendant?.middleName}
+                                    {sale?.attendant?.firstName} {sale?.attendant?.middleName} {sale?.attendant?.lastName}
                                 </TableCell>
                                 <TableCell>GHC {sale?.totalAmount}</TableCell>
                                 <TableCell>GHC {sale?.amountPaid}</TableCell>
                                 <TableCell>GHC {sale?.amountLeft}</TableCell>
+                                <TableCell className="">
+                                    {sale.createdAt}
+                                </TableCell>
                                 <TableCell>GHC {sale?.balance}</TableCell>
                                 <TableCell className="relative flex items-center gap-4">
-                                    <Button
-                                        size="sm"
-                                        color="success"
-                                        variant="flat"
-                                        onClick={() => {
-                                            // Refund logic
-                                        }}
-                                    >
-                                        Refund
-                                    </Button>
+
+                                    <EyeIcon className="" />
                                 </TableCell>
                             </TableRow>
                         ))}

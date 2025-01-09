@@ -331,6 +331,7 @@ const Report = () => {
 
             {/* Recent Sales Table */}
             <div className="mb-5 grid grid-cols-1 gap-10">
+
                 <div className="px-2  shadow-md rounded-xl border border-black/5 dark:bg-[#333] dark:border-white/5 mt-6">
                     <CustomTable
                         columns={SalesColumns}
@@ -341,12 +342,15 @@ const Report = () => {
                             <TableRow key={index}>
                                 <TableCell>{sale._id}</TableCell>
                                 <TableCell>
-                                    {sale?.attendant?.firstName} {sale?.attendant?.middleName}
+                                    {sale?.attendant?.firstName} {sale?.attendant?.middleName} {sale?.attendant?.lastName}
                                 </TableCell>
                                 <TableCell>GHC {sale?.totalAmount}</TableCell>
                                 <TableCell>GHC {sale?.amountPaid}</TableCell>
                                 <TableCell>GHC {sale?.amountLeft}</TableCell>
                                 <TableCell>GHC {sale?.balance}</TableCell>
+                                <TableCell className="">
+                                    {sale.createdAt}
+                                </TableCell>
                                 <TableCell className="relative flex items-center gap-4">
                                     <Button
                                         size="sm"
