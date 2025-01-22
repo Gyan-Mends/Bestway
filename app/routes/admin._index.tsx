@@ -60,7 +60,7 @@ const Admin = () => {
         const timer = setTimeout(() => {
             setIsLoading(true);
         }, 1000);
-        return () => clearTimeout(timer); 
+        return () => clearTimeout(timer);
     }, []);
 
     const handleEditModalClosed = () => {
@@ -83,40 +83,40 @@ const Admin = () => {
 
             <div className='mt-6 lg:grid lg:grid-cols-4 gap-4'>
                 <Link to="/admin/products">
-                <CustomedCard
-                    title='Total Product'
+                    <CustomedCard
+                        title='Total Product'
                         total={productCount}
-                    icon={
-                        <ProductIcon className="h-[20px] w-[20px] text-success" />
-                    }
-                />
+                        icon={
+                            <ProductIcon className="h-[20px] w-[20px] text-success" />
+                        }
+                    />
                 </Link>
                 <Link to="/admin/users">
-                <CustomedCard
+                    <CustomedCard
                         title='Total Users'
                         total={usersCount}
-                    icon={
-                        <UserIcon className="h-[20px] w-[20px] text-success" />
-                    }
-                />
+                        icon={
+                            <UserIcon className="h-[20px] w-[20px] text-success" />
+                        }
+                    />
                 </Link>
                 <Link to="/admin/suppliers">
-                <CustomedCard
+                    <CustomedCard
                         title='Total Suppliers'
                         total={suppliersCount}
-                    icon={
-                        <SupplierIcon className="h-[20px] w-[20px] text-success" />
-                    }
-                />
+                        icon={
+                            <SupplierIcon className="h-[20px] w-[20px] text-success" />
+                        }
+                    />
                 </Link>
                 <Link to="/admin/suppliers">
-                <CustomedCard
+                    <CustomedCard
                         title=' Categories'
                         total={categoryCount}
-                    icon={
-                        <CategoryIcon className="h-[20px] w-[20px] text-success" />
-                    }
-                />
+                        icon={
+                            <CategoryIcon className="h-[20px] w-[20px] text-success" />
+                        }
+                    />
                 </Link>
             </div>
 
@@ -189,7 +189,7 @@ const Admin = () => {
                                     }
                                 />
                             </Link>
-                    </div>
+                        </div>
                         <div className='lg:grid lg:grid-cols-2 gap-6'>
                             <Link to="/admin/products">
                                 <CustomedCard
@@ -232,6 +232,9 @@ const Admin = () => {
                                 <TableCell>GHC {sale?.amountPaid}</TableCell>
                                 <TableCell>GHC {sale?.amountLeft}</TableCell>
                                 <TableCell>GHC {sale?.balance}</TableCell>
+                                <TableCell className="">
+                                    {sale.createdAt}
+                                </TableCell>
                                 <TableCell className="relative flex items-center gap-4">
                                     <Button
                                         size="sm"
@@ -290,7 +293,7 @@ export const loader: LoaderFunction = async ({ request }) => {
         weeklyTotal,
         monthlyTotal,
         yearlyTotal,
-        olderTotal, total, totalAfterSales, totalProfitAfterSales   
+        olderTotal, total, totalAfterSales, totalProfitAfterSales
     } = await adminDashboardController.getSales({
         request,
         page,

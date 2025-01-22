@@ -52,17 +52,17 @@ const Products = () => {
     }
 
     useEffect(() => {
-        const timeOut= setTimeout(() =>{
+        const timeOut = setTimeout(() => {
             setIsLoading(true)
-        },1000)
+        }, 1000)
         return () => clearTimeout(timeOut)
-    },[])
+    }, [])
 
     useEffect(() => {
-        if(actionData){
-            if(actionData.success){
+        if (actionData) {
+            if (actionData.success) {
                 successToast(actionData.message)
-            }else{
+            } else {
                 errorToast(actionData.message)
             }
         }
@@ -79,7 +79,7 @@ const Products = () => {
                     {/* back */}
                     {/* back */}
                     <Button size="sm" onClick={() => {
-                            navigate(-1)
+                        navigate(-1)
                     }} color="primary" className="font-nunito text-sm  border-b-white dark:border-primary  dark:text-white dark:bg-[#333]">
                         <BackIcon className="h-[20px] w-[20px] dark:text-success" /><p >Back</p>
                     </Button>
@@ -87,18 +87,18 @@ const Products = () => {
                 <div className="flex gap-4">
                     {/* search */}
                     {/* search */}
-                        <Input
+                    <Input
                         size="sm"
-                            placeholder="Search user..."
-                            startContent={<SearchIcon className="" />}
-                            onValueChange={(value) => {
-                                const timeoutId = setTimeout(() => {
-                                    navigate(`?search_term=${value}`);
-                                }, 100);
-                                return () => clearTimeout(timeoutId);
-                            }} classNames={{
-                                inputWrapper: "bg-white shadow-sm text-sm font-nunito dark:bg-[#333] border border-white/5 ",
-                            }}
+                        placeholder="Search user..."
+                        startContent={<SearchIcon className="" />}
+                        onValueChange={(value) => {
+                            const timeoutId = setTimeout(() => {
+                                navigate(`?search_term=${value}`);
+                            }, 100);
+                            return () => clearTimeout(timeoutId);
+                        }} classNames={{
+                            inputWrapper: "bg-white shadow-sm text-sm font-nunito dark:bg-[#333] border border-white/5 ",
+                        }}
                     />
                     {/* button to add new user */}
                     {/* button to add new user */}
@@ -118,10 +118,9 @@ const Products = () => {
                 loadingState={navigation.state === "loading" ? "loading" : "idle"}
                 totalPages={totalPages}
                 page={1}
-                setPage={(page) => {
-                    navigate(`?pages=${page}`)
-                }}
-            >
+                setPage={(page) => (
+                    navigate(`?page=${page}`)
+                )}>
                 {products.map((products: ProductInterface, index: number) => (
                     <TableRow key={index}>
                         <TableCell>
@@ -378,32 +377,27 @@ const Products = () => {
                                 }}
                             />
                         </div>
-
+                        {/* 
                         <div className="pt-4">
-                            <Select
+                            <Input
                                 label="Category"
-                                labelPlacement="outside"
+                                name="category"
                                 placeholder=" "
+                                isClearable
+                                defaultValue={selectedProducts?.category}
                                 isRequired
                                 className="mt-4"
-                                name="category"
+                                labelPlacement="outside"
                                 classNames={{
-                                    trigger: "bg-white shadow-sm dark:bg-[#333] border border-white/30 focus:bg-[#333] ",
-                                    popoverContent: "bg-white shadow-sm dark:bg-[#191919] border border-white/5 focus:bg-[#333] "
+                                    label: "font-nunito text-sm text-default-100",
+                                    inputWrapper: "bg-white shadow-sm dark:bg-[#333] border border-white/30 focus:bg-[#333] "
                                 }}
+                            />
 
-                            >
-                                {categories.map((cat: CategoryInterface) => (
-                                    <SelectItem textValue={selectedProducts?.category?.name} className="mt-4" key={cat._id}>
-                                        {selectedProducts?.category?.name}
-                                    </SelectItem>
-                                ))}
+                        </div> */}
 
-                            </Select>
-                        </div>
+                        <div className="flex flex-col gap-4 mt-4">
 
-                        <div className="flex gap-10 mt-4">
-                            {/* image */}
                             <Input
                                 label="Quantity"
                                 name="quantity"
@@ -436,7 +430,7 @@ const Products = () => {
                             />
                         </div>
 
-                        <div className="pt-2 mt-4">
+                        {/* <div className="pt-2 mt-4">
                             <label className="font-nunito " htmlFor="">Image</label>
                             <input
                                 name="image"
@@ -456,7 +450,7 @@ const Products = () => {
                                     }
                                 }}
                             />
-                        </div>
+                        </div> */}
 
                         <Textarea
                             autoFocus
@@ -540,8 +534,8 @@ export const action: ActionFunction = async ({ request }) => {
                 name,
                 price,
                 quantity,
-                category,
-                base64Image,
+                // category,
+                // base64Image,
                 low_stock,
                 description,
                 seller,
@@ -578,7 +572,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     };
 
     const { user, products, totalPages, total, totalAfterSales, totalProfitAfterSales } = await productsController.FetchProducts({ request, page, search_term });
-    const {categories} = await category.getCategories({
+    const { categories } = await category.getCategories({
         page,
         request,
         search_term

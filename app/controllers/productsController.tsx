@@ -51,7 +51,7 @@ class ProductsController {
 
                 if (Number(low_stock) >= Number(quantity)) {
                     return json({ message: "Low stock must be less than quantity", success: false }, { status: 400 })
-                } else if (price < costPrice) {
+                } else if (Number(price) < Number(costPrice)) {
                     return json({ message: "Runnig at loss, selling price must be equal to or more than cost price", success: false }, { status: 400 })
                 } else {
                     const response = await products.save();
@@ -86,8 +86,6 @@ class ProductsController {
             name,
             price,
             quantity,
-            category,
-            base64Image,
             low_stock,
             description,
             seller,
@@ -98,8 +96,6 @@ class ProductsController {
             name: string,
             price: string,
             quantity: string,
-            category: string,
-            base64Image: string,
             low_stock: string,
             description: string,
             seller: string,
@@ -114,8 +110,8 @@ class ProductsController {
                     name,
                     price,
                     quantity,
-                    category,
-                    base64Image,
+                    // category,
+                    // base64Image,
                     low_stock,
                     description,
                     seller,
@@ -185,17 +181,17 @@ class ProductsController {
         search_term,
         limit = 9,
     }: {
-            request: Request;
+        request: Request;
         page: number;
         search_term: string;
         limit?: number;
-        }): Promise<{
-            user: RegistrationInterface[];
-            products: ProductInterface[];
-            totalPages: number;
+    }): Promise<{
+        user: RegistrationInterface[];
+        products: ProductInterface[];
+        totalPages: number;
     } | any> {
         const skipCount = (page - 1) * limit; // Calculate the number of documents to skip
-    
+
         // Define the search filter only once
         const searchFilter = {
             ...(
@@ -219,7 +215,7 @@ class ProductsController {
             ),
             quantity: { $gt: 0 }, // Ensure only products with quantity > 0 are fetched
         };
-    
+
         try {
             // Get session and user information
             const session = await getSession(request.headers.get("Cookie"));
@@ -228,13 +224,19 @@ class ProductsController {
 
             const totalProductsCount = await Product.countDocuments(searchFilter).exec();
             const totalPages = Math.ceil(totalProductsCount / limit);
-    
+
             // Find users with pagination and search filter
             const products = await Product.find(searchFilter)
                 .populate("category")
                 .skip(skipCount)
                 .limit(limit)
                 .exec();
+
+            const pro = await Product.find(searchFilter)
+                .populate("category")
+                .skip(skipCount)
+                .exec();
+
 
             const result = await Product.aggregate([
                 {
@@ -265,8 +267,8 @@ class ProductsController {
             const total = result.length > 0 ? result[0].totalProductAmount : 0;
             const totalAfterSales = result1.length > 0 ? result1[0].totalProductAmountAfterSales : 0;
             const totalProfitAfterSales = result2.length > 0 ? result2[0].profitAfterSales : 0;
-    
-            return { user, products, totalPages, total, totalAfterSales, totalProfitAfterSales };
+
+            return { pro, user, products, totalPages, total, totalAfterSales, totalProfitAfterSales };
         } catch (error: any) {
             return {
                 message: error.message,

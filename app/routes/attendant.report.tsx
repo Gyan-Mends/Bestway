@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import AdminLayout from "~/layout/adminLayout";
 import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useActionData, useLoaderData, useSubmit } from "@remix-run/react";
 import { Button, Calendar, TableCell, TableRow } from "@nextui-org/react";
 import Attendant from "~/layout/attendantLayout";
 import attendanceDashboardController from "~/controllers/AttendanceDashBoardController";
@@ -16,6 +16,12 @@ import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, X
 import SaleIcon from "~/components/icons/Sales";
 import adminDashboardController from "~/controllers/AdminDashBoardController";
 import { getSession } from "~/session";
+import EditModal from "~/components/modal/EditModal";
+import { DeleteIcon } from "~/components/icons/DeleteIcon";
+import ConfirmModal from "~/components/modal/confirmModal";
+import salesController from "~/controllers/sales";
+import { Toaster } from "react-hot-toast";
+import { errorToast, successToast } from "~/components/toast";
 
 
 const Report = () => {
@@ -35,10 +41,10 @@ const Report = () => {
         monthlyAmountToBePaid,
         yearlyAmountToBePaid } = useLoaderData<{
             sales: SalesInterface[];
-        dailyTotal: number,
-        weeklyTotal: number,
-        monthlyTotal: number,
-        yearlyTotal: number,
+            dailyTotal: number,
+            weeklyTotal: number,
+            monthlyTotal: number,
+            yearlyTotal: number,
             totalAmountPaid: number
             weeklytotalAmountPaid: number
             monthlytotalAmountPaid: number
@@ -47,11 +53,24 @@ const Report = () => {
             weeklyAmountToBePaid: number
             monthlyAmountToBePaid: number
             yearlyAmountToBePaid: number
-        counts: { daily: number; weekly: number; monthly: number; yearly: number };
-    }>();
+            counts: { daily: number; weekly: number; monthly: number; yearly: number };
+        }>();
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [isLoading, setIsLoading] = useState(true);
+    const [isEditModalOpened, setIsEditModalOpened] = useState(false)
+    const [isConfirmModalOpened, setIsConfirmModalOpened] = useState(false)
+    const [dataValue, setDataValue] = useState(sales)
+    const submit = useSubmit()
+    const actionData = useActionData<any>()
 
+
+
+    const handleEditModalClose = () => {
+        setIsEditModalOpened(false)
+    }
+    const handleConfirmModalClosed = () => {
+        setIsConfirmModalOpened(false)
+    }
     const handleRowsPerPageChange = (newRowsPerPage: number) => {
         setRowsPerPage(newRowsPerPage);
     };
@@ -60,6 +79,15 @@ const Report = () => {
         const timer = setTimeout(() => setIsLoading(false), 1000);
         return () => clearTimeout(timer);
     }, []);
+    useEffect(() => {
+        if (actionData) {
+            if (actionData.success) {
+                successToast(actionData.message)
+            } else {
+                errorToast(actionData.message)
+            }
+        }
+    }, [actionData])
 
     const dailySalesReport = [
         { name: " Sales Quant", total: counts.daily },
@@ -88,6 +116,8 @@ const Report = () => {
 
     return (
         <Attendant pageName="Report">
+            <Toaster position="top-right" />
+
             <div>
                 <div>
                     <p className="font-nunito text-2xl">Daily Sales Report</p>
@@ -301,6 +331,7 @@ const Report = () => {
 
             {/* Recent Sales Table */}
             <div className="mb-5 grid grid-cols-1 gap-10">
+
                 <div className="px-2  shadow-md rounded-xl border border-black/5 dark:bg-[#333] dark:border-white/5 mt-6">
                     <CustomTable
                         columns={SalesColumns}
@@ -311,19 +342,23 @@ const Report = () => {
                             <TableRow key={index}>
                                 <TableCell>{sale._id}</TableCell>
                                 <TableCell>
-                                    {sale?.attendant?.firstName} {sale?.attendant?.middleName}
+                                    {sale?.attendant?.firstName} {sale?.attendant?.middleName} {sale?.attendant?.lastName}
                                 </TableCell>
                                 <TableCell>GHC {sale?.totalAmount}</TableCell>
                                 <TableCell>GHC {sale?.amountPaid}</TableCell>
                                 <TableCell>GHC {sale?.amountLeft}</TableCell>
                                 <TableCell>GHC {sale?.balance}</TableCell>
+                                <TableCell className="">
+                                    {sale.createdAt}
+                                </TableCell>
                                 <TableCell className="relative flex items-center gap-4">
                                     <Button
                                         size="sm"
                                         color="success"
                                         variant="flat"
                                         onClick={() => {
-                                            // Refund logic
+                                            setIsEditModalOpened(true)
+                                            setDataValue(sale)
                                         }}
                                     >
                                         Refund
@@ -334,6 +369,70 @@ const Report = () => {
                     </CustomTable>
                 </div>
             </div>
+
+            <EditModal modalTitle="Refund" className="dark:bg-slate-800 bg-white" onOpenChange={handleEditModalClose} isOpen={isEditModalOpened}>
+                {(onClose) => (
+                    <div>
+                        <p className="font-nunito font-semibold">Products</p>
+                        {dataValue?.products?.map((productDetail: SalesInterface, idx: number) => (
+                            <div key={idx} className="px-4 h-20 w-full bg-white dark:bg-[#191919] border border-white/5 mt-4 rounded-lg p-2 flex gap-10">
+                                <div className="h-16 w-20">
+                                    <img className="h-16 w-20 rounded-lg" src={productDetail?.product?.image} alt={productDetail?.product?.name} />
+                                </div>
+                                <div className="flex flex-col justify-between w-full">
+                                    <div className="flex justify-between">
+                                        <p className="font-nunito text-lg">{productDetail?.product?.name}</p>
+                                        <button
+                                            className="text-danger"
+                                            type="button"
+                                            onClick={() => {
+                                                setIsConfirmModalOpened(true);
+                                                setIsEditModalOpened(true)
+                                                setDataValue(productDetail);
+                                            }}
+                                        >
+                                            <DeleteIcon />
+                                        </button>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <p className="font-nunito text-sm">
+                                            {productDetail?.quantity === 1 ? `${productDetail?.quantity} item` : `${productDetail?.quantity} items`}
+                                        </p>
+                                        <p className="font-nunito text-md">Ghc {(productDetail?.product?.price) * productDetail?.quantity}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </EditModal>
+
+            <ConfirmModal className="" header="Confirm Remove" content="Are you sure to remove item from cart? " isOpen={isConfirmModalOpened} onOpenChange={handleConfirmModalClosed}>
+                <div className="flex gap-4">
+                    <Button color="primary" variant="flat" className="font-nunito text-md" onPress={handleConfirmModalClosed}>
+                        No
+                    </Button>
+                    <Button color="danger" variant="flat" className="font-nunito text-md" onClick={() => {
+                        setIsConfirmModalOpened(false);
+                        if (dataValue) {
+                            submit(
+                                {
+                                    amount: (Number(dataValue.quantity)) * dataValue.product.price,
+                                    pQuantity: dataValue.quantity,
+                                    intent: "refund",
+                                    id: dataValue?.product._id,
+                                },
+                                {
+                                    method: "post",
+                                }
+                            );
+                        }
+
+                    }}>
+                        Yes
+                    </Button>
+                </div>
+            </ConfirmModal>
         </Attendant>
     );
 };
@@ -343,11 +442,23 @@ export default Report;
 export const action: ActionFunction = async ({ request }) => {
     const formData = await request.formData();
     const intent = formData.get("intent") as string;
+    const quantity = formData.get("pQuantity") as string;
+    const amount = formData.get("amount") as string;
+    console.log(amount);
+
+    const id = formData.get("id") as string;
+    console.log(id);
+
+
 
     switch (intent) {
         case "logout":
             const logout = await adminDashboardController.logout(intent)
             return logout
+
+        case "refund":
+            const Refund = await salesController.Refund({ id, intent, quantity, amount })
+            return Refund
 
         default:
             return json({
@@ -388,10 +499,10 @@ export const loader: LoaderFunction = async ({ request }) => {
         weeklyAmountToBePaid,
         monthlyAmountToBePaid,
         yearlyAmountToBePaid } = await attendanceDashboardController.getSales({
-        request,
-        page,
-        limit: 10, // Fetch 10 sales per page
-    });
+            request,
+            page,
+            limit: 10, // Fetch 10 sales per page
+        });
 
     return {
         sales,

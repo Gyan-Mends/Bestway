@@ -36,6 +36,7 @@ export const SalesColumns = [
     { key: "amountPaid", label: "Amount Paid" },
     { key: "amountLeft", label: "Amount Left" },
     { key: "balance", label: "Balance" },
+    { key: "date", label: "Date" },
     { key: "action", label: "Action" }
 ]
 export const AdminDashboardSalesColumns = [

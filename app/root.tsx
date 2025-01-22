@@ -58,7 +58,7 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <ThemeProvider defaultTheme="light" attribute="class">
+        <ThemeProvider defaultTheme="dark" attribute="class">
           <NextUIProvider>
             <SubscriptionAutoRenew /> {/* Add the subscription component */}
             <Outlet />
