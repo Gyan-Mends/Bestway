@@ -489,7 +489,6 @@ export const loader: LoaderFunction = async ({ request }) => {
         search_term
     });
 
-    console.log(users);
 
 
 
