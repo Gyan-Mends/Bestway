@@ -21,7 +21,7 @@ const PublicLayout = ({ children }: { children: ReactNode }) => {
     const handleInputChange = () => {
         setSearchModalOpened(false)
     }
-    // const { theme, setTheme } = useTheme()
+    const { theme, setTheme } = useTheme()
     const menuItems = [
         "Profile",
         "Dashboard",
@@ -35,7 +35,7 @@ const PublicLayout = ({ children }: { children: ReactNode }) => {
         "Log Out",
     ];
     return (
-        <div className={`  overflow-x-hidden `}>
+        <div className={`${theme === "light" ? "bg-white " : "dark:bg-[#191919]"}  overflow-x-hidden `}>
             {/* navigation bar */}
             <Navbar
                 isBordered={false}
@@ -43,7 +43,7 @@ const PublicLayout = ({ children }: { children: ReactNode }) => {
                 onMenuOpenChange={setIsMenuOpen}
                 isBlurred
                 position="sticky"
-                className="top-0 z-50 py-2 sticky"  // Add 'sticky' class
+                className="top-0 z-50 py-2 sticky"
             >
                 <NavbarContent className="lg:hidden">
                     <NavbarMenuToggle aria-label={isMenuOpen ? 'Close menu' : 'Open menu'} />
@@ -70,6 +70,14 @@ const PublicLayout = ({ children }: { children: ReactNode }) => {
                 </NavbarContent>
 
                 <NavbarContent className="lg:-mr-60 flex gap-2 lg:gap-8" justify="end">
+                    <Button
+                        isIconOnly
+                        variant="flat"
+                        onPress={() => setTheme(theme === "light" ? "dark" : "light")}
+                        className="text-black"
+                    >
+                        {theme === "light" ? <MoonIcon className="" /> : <SunIcon className="" />}
+                    </Button>
                     <NavbarItem>
                         <Link className="font-nunito" to="/">
                             Login

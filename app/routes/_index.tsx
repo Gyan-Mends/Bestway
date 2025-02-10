@@ -11,6 +11,14 @@ import headset from "../components/illustration/headset.png";
 import ShippingIcon from "~/components/icons/ShippingIcon";
 import P1 from "~/components/illustration/p1.jpg";
 import watch1 from "~/components/illustration/watch.png";
+import chanfa from "~/components/images/changfa-removebg-preview.png";
+import blanket from "~/components/images/blanket-removed.png";
+import pump from "~/components/images/pumping-removed.png";
+import holes from "~/components/images/holes.png";
+import oil from "~/components/images/GTT_iol_1_litter-removebg-preview.png";
+import parts from "~/components/images/parts3-removebg-preview.png";
+import cements from "~/components/images/cement1-removebg-preview.png";
+import bulk from "~/components/images/Wholesale.png";
 import news from "~/components/illustration/news.jpg";
 import InstagramIcon from "~/components/icons/InstgramIcon";
 import TwiterIcon from "~/components/icons/TwiterIcon";
@@ -22,75 +30,81 @@ const Home = () => {
     const sections = [
         {
             bgColor: 'bg-gradient-to-l from-[#191919] via-[#191919] to-[#191919]',
-            title: 'Enjoy',
-            subtitle: 'With',
+            title: 'Buy',
+            subtitle: 'All Machine',
             textColor: "text-white",
-            mainText: 'EARPHONE',
+            mainText: 'Parts',
             mainTextColor: 'text-[#4c4c4c]',
             buttonColor: 'bg-[#f42c37]',
             buttonTextColor: 'text-white',
-            image: handsfree,
+            image: parts,
             colSpan: 'col-span-1',
+            className: "w-80"
         },
         {
             bgColor: 'bg-[#fcb900]',
-            title: 'New',
-            subtitle: 'Wear',
+            title: 'Explore more',
+            subtitle: 'of our quality',
             textColor: "text-white",
-            mainText: 'GADGET',
+            mainText: 'Oil and grease',
             mainTextColor: 'text-yellow-300',
             buttonColor: 'bg-white',
             buttonTextColor: 'text-[#fcb900]',
-            image: watch,
+            image: oil,
             colSpan: 'col-span-1',
+            className: "h-80 w-60"
         },
         {
             bgColor: 'bg-[#f42c37]',
-            title: 'Trend',
-            subtitle: 'Devices',
+            title: 'Get best',
+            subtitle: 'Performaning',
             textColor: "text-white",
-            mainText: 'LAPTOPS',
+            mainText: 'Engine',
             mainTextColor: 'text-red-300',
             buttonColor: 'bg-white',
             buttonTextColor: 'text-[#f42c37]',
-            image: laptop,
+            image: chanfa,
             colSpan: 'col-span-2',
+            className: "h-[50vh] w-[35vw]"
         },
         {
             bgColor: 'bg-gradient-to-l from-[#cfcfcf] via-[#cfcfcf] to-[#cfcfcf]',
-            title: 'Best',
-            subtitle: 'Gaming',
+            title: 'Avoid',
+            subtitle: 'Faulty',
             textColor: "text-black",
-            mainText: 'Console',
+            mainText: 'Holes',
             mainTextColor: 'text-white',
             buttonColor: 'bg-[#f42c37]',
             buttonTextColor: 'text-white',
-            image: console,
+            image: holes,
             colSpan: 'col-span-2',
+            className: ""
         },
         {
             bgColor: 'bg-[#00d084]',
-            title: 'Enjoy',
-            subtitle: 'Playing',
-            mainText: 'Game',
+            title: 'Skip',
+            subtitle: 'Loosing',
+            mainText: 'Gold',
             textColor: "text-white",
             mainTextColor: 'text-green-300',
             buttonColor: 'bg-white',
             buttonTextColor: 'text-[#00d084]',
-            image: reality,
+            image: blanket,
             colSpan: 'col-span-1',
+            className: "h-60 w-60"
         },
         {
             bgColor: 'bg-primary',
-            title: 'New',
-            subtitle: 'Amazon',
-            mainText: 'Speaker',
+            title: 'Get',
+            subtitle: 'Bulding',
+            mainText: 'Materials',
             textColor: "text-white",
             mainTextColor: 'text-primary-300',
             buttonColor: 'bg-white',
             buttonTextColor: 'text-primary',
-            image: speaker,
+            image: cements,
             colSpan: 'col-span-1',
+            className: "w-60"
         },
 
     ];
@@ -151,22 +165,16 @@ const Home = () => {
         <PublicLayout>
             <section>
                 <div className="lg:h-[100vh] bg-gradient-to-l from-gray-100 via-[#cfcfcf] to-[#cfcfcf] rounded-2xl w-full flex flex-col lg:pl-40 lg:pr-10 justify-center gap-2 mt-4 shadow-sm relative overflow-hidden">
-                    <p className="font-nunito text-4xl font-bold">Beats solo</p>
-                    <p className="font-montserrat text-8xl font-bold">Wireless</p>
-                    <p className="font-montserrat text-[170px] font-bold text-white/80">HEADPHONE</p>
+                    <p className="font-montserrat text-8xl font-bold">Water</p>
+                    <p className="font-montserrat text-[130px] font-bold text-white/80">Pump</p>
                     <Link to="/shop">
                         <button className="lg:w-60 lg:h-14 bg-[#f42c37] rounded-full text-white font-nunito text-lg inset-0">
                             Shop By Category
                         </button>
                     </Link>
 
-                    <section className="flex flex-col self-end lg:px-10 w-1/3">
-                        <p className="font-nunito font-bold text-lg">Description</p>
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laudantium laborum eligendi aliquam expedita odit illo ducimus earum ipsa facilis dolorem. Corporis dolores nobis voluptates perspiciatis ea eveniet facilis debitis rerum!</p>
-                    </section>
-
-                    <div className="absolute flex items-center justify-center overflow-hidden">
-                        <img src={headphone} alt="" className="max-w-full max-h-full object-contain" />
+                    <div className="absolute flex items-center justify-center overflow-hidden w-full">
+                        <img src={pump} alt="" className="w-[80vw] h-[80vh] object-contain" />
                     </div>
                 </div>
             </section>
@@ -186,7 +194,7 @@ const Home = () => {
                             Browse
                         </Button>
                         <div className="absolute bottom-0 right-0 overflow-hidden">
-                            <img src={section.image} alt={section.mainText} className="max-w-full max-h-full object-contain" />
+                            <img src={section.image} alt={section.mainText} className={section.className} />
                         </div>
                     </div>
                 ))}
@@ -233,19 +241,12 @@ const Home = () => {
                         <p className="font-nunito">20% OFF</p>
                         <p className="font-montserrat font-bold text-[70px]">FINE</p>
                         <p className="font-montserrat font-bold text-[70px] -mt-6">SMILE</p>
-                        <p className="font-nunito">15TH Nov to 30 Dec</p>
-                    </div>
-                    <div>
-                        <p className="font-nunito">Best Solo Air</p>
-                        <p className="font-nunito font-bold text-[70px]">Summer Sales</p>
-                        <p className="font-nunito">Company that grew from 300 to 450 employees last month</p>
-                        <Button className="mt-4 text-lg font-nunito bg-white">
-                            Shop
-                        </Button>
+                        <p className="font-nunito animate-bounce">Bulk Purchases</p>
                     </div>
 
-                    <div className="absolute lg:-mt-40 lg:-ml-40">
-                        <img src={headset} className="" />
+
+                    <div className="absolute lg:-mt-40 lg:-ml-40 flex justify-center items-center w-full h-full">
+                        <img src={bulk} className="" />
                     </div>
                 </div>
             </section>
@@ -273,7 +274,7 @@ const Home = () => {
                         <p className="font-nunito">20% OFF</p>
                         <p className="font-montserrat font-bold text-[70px]">FINE</p>
                         <p className="font-montserrat font-bold text-[70px] -mt-6">SMILE</p>
-                        <p className="font-nunito">15TH Nov to 30 Dec</p>
+                        <p className="font-nunito">Bulk Purchases</p>
                     </div>
                     <div>
                         <p className="font-nunito">Best Solo Air</p>
